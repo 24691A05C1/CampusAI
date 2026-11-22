@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}CampusAI | Welcome{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="container hero-grid">
+
+        <div>
+            <span class="eyebrow">✦ YOUR SMART COLLEGE COMPANION</span>
+
+            <h1>
+                Make your campus journey
+                <span>smarter.</span>
+            </h1>
+
+            <p>
+                Welcome to CampusAI! Your smart college companion
+                for exploring colleges and academic resources.
+                Please log in or create an account to continue.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a class="btn btn-primary"
+                   href="{{ url_for('login') }}">
+                    Login →
+                </a>
+
+                <a class="btn btn-light"
+                   href="{{ url_for('register') }}">
+                    Register
+                </a>
+
+            </div>
+        </div>
+
+        <div>
+            <img
+                class="hero-art"
+                src="{{ url_for('static', filename='images/campusai-hero.png') }}"
+                alt="CampusAI friendly study assistant robot"
+            >
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

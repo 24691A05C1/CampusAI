@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block title %}Question Papers | CampusAI{% endblock %}
+
+{% block content %}
+
+<section class="page-top">
+    <div class="container">
+        <h1>Previous Question Papers</h1>
+        <p>Find examination and library resources shared by colleges.</p>
+    </div>
+</section>
+
+<main class="container section">
+
+    <form class="panel"
+          method="GET"
+          action="{{ url_for('question_papers') }}">
+
+        <div class="field">
+
+            <label for="college_id">Select College</label>
+
+            <select class="input"
+                    id="college_id"
+                    name="college_id"
+                    required>
+
+                <option value="">Choose your college...</option>
+
+                {% for college in colleges %}
+
+                    <option value="{{ college._id|string }}"
+                        {% if selected_college == college._id|string %}selected{% endif %}>
+
+                        {{ college.college_name }}
+
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="form-grid">
+
+            <div class="field">
+
+                <label for="semester">Semester (optional)</label>
+
+                <select class="input" id="semester" name="semester">
+
+                    <option value="">Select semester</option>
+
+                    {% for i in range(1,9) %}
+
+                        <option value="{{ i }}"
+                            {% if selected_semester == i|string %}selected{% endif %}>
+
+                            Semester {{ i }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+            <div class="field">
+
+                <label for="year">Academic year (optional)</label>
+
+                <select class="input" id="year" name="year">
+
+                    <option value="">Select year</option>
+
+                    {% for y in range(2026,2019,-1) %}
+
+                        <option value="{{ y }}"
+                            {% if selected_year == y|string %}selected{% endif %}>
+
+                            {{ y }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="field">
+
+            <label for="subject">Subject (optional)</label>
+
+            <input
+                class="input"
+                id="subject"
+                name="subject"
+                value="{{ selected_subject }}"
+                placeholder="Enter subject name"
+            >
+
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Find Question Papers →
+        </button>
+
+    </form>
+
+
+    {% if selected_college %}
+
+        <section class="panel">
+
+            <h2>Search Results</h2>
+
+            {% if selected %}
+
+                <div class="result-summary">
+
+                    <strong>{{ selected.college_name }}</strong>
+
+                    {% if selected_semester %}
+                        <span>Semester {{ selected_semester }}</span>
+                    {% endif %}
+
+                    {% if selected_year %}
+                        <span>Academic year: {{ selected_year }}</span>
+                    {% endif %}
+
+                    {% if selected_subject %}
+                        <span>Subject: {{ selected_subject }}</span>
+                    {% endif %}
+
+                </div>
+
+
+                {% if question_papers_url %}
+
+                    <a class="btn btn-primary"
+                       style="margin-top:16px"
+                       href="{{ question_papers_url }}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+
+                        Open Question Papers ↗
+
+                    </a>
+
+                    <p class="muted">
+                        Open the available college examination or library resource.
+                    </p>
+
+                {% elif official_website_url %}
+
+                    <div class="empty" style="margin-top:16px">
+
+                        <h3>Question Paper Link Not Available</h3>
+
+                        <p>
+                            A separate question-paper resource link has not
+                            been added for this college. You can visit its
+                            official website to look for examination resources.
+                        </p>
+
+                        <a class="btn btn-primary"
+                           style="margin-top:12px"
+                           href="{{ official_website_url }}"
+                           target="_blank"
+                           rel="noopener noreferrer">
+
+                            Visit Official College Website ↗
+
+                        </a>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty" style="margin-top:16px">
+
+                        <h3>Resource Not Available</h3>
+
+                        <p>
+                            No question-paper resource or official website
+                            is currently available for this college.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            {% else %}
+
+                <div class="empty">
+                    The selected college could not be found.
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    {% endif %}
+
+    <p class="notice">
+        CampusAI links to external college resources.
+        It does not upload or host PDF files.
+    </p>
+
+</main>
+
+{% endblock %}

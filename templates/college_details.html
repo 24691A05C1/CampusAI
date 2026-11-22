@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% block title %}{{ college.college_name }} | CampusAI{% endblock %}
+
+{% block content %}
+
+<section class="page-top">
+    <div class="container">
+        <a class="back-link" href="{{ url_for('explore_colleges') }}">
+            ← Back to colleges
+        </a>
+
+        <h1>{{ college.college_name }}</h1>
+        <p>{{ college.location or "Location details not available." }}</p>
+    </div>
+</section>
+
+<main class="container section details-layout">
+
+    <!-- COLLEGE OVERVIEW -->
+    <section class="panel">
+        <span class="detail-kicker">COLLEGE OVERVIEW</span>
+        <h2>About this college</h2>
+
+        <p>
+            {{ college.description or
+            "A detailed college overview is not available yet." }}
+        </p>
+
+        <div class="detail-actions">
+
+            {% if college.website|safe_url %}
+            <a class="btn btn-primary"
+               href="{{ college.website|safe_url }}"
+               target="_blank" rel="noopener noreferrer">
+                Official Website ↗
+            </a>
+            {% endif %}
+
+            {% if college.location %}
+            <a class="btn btn-outline"
+               href="https://www.google.com/maps/search/?api=1&query={{ college.location|urlencode }}"
+               target="_blank" rel="noopener noreferrer">
+                View on Google Maps ↗
+            </a>
+            {% endif %}
+
+        </div>
+    </section>
+
+    <div class="details-grid">
+
+        <!-- COURSES -->
+        <section class="panel">
+            <h3>Courses & Branches</h3>
+
+            {% if college.courses %}
+                {% if college.courses is string %}
+                    <p>{{ college.courses }}</p>
+                {% else %}
+                    <ul>
+                        {% for course in college.courses %}
+                        <li>{{ course }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% else %}
+                <p class="muted">Course information is not available.</p>
+            {% endif %}
+        </section>
+
+        <!-- ELIGIBILITY -->
+        <section class="panel">
+            <h3>Admissions & Eligibility</h3>
+
+            {% if college.admission_info %}
+                <p>{{ college.admission_info }}</p>
+            {% elif college.eligibility %}
+                <p>{{ college.eligibility }}</p>
+            {% else %}
+                <p class="muted">
+                    Verified eligibility details are not available.
+                    Please check the official admission notification.
+                </p>
+            {% endif %}
+
+            {% if college.admission_url %}
+            <a class="small-link"
+               href="{{ college.admission_url|safe_url }}"
+               target="_blank" rel="noopener noreferrer">
+                Official Admission Information ↗
+            </a>
+            {% elif college.website|safe_url %}
+            <a class="small-link"
+               href="{{ college.website|safe_url }}"
+               target="_blank" rel="noopener noreferrer">
+                Visit College Website ↗
+            </a>
+            {% endif %}
+        </section>
+
+        <!-- FEES -->
+        <section class="panel">
+            <h3>Fee Structure</h3>
+
+            {% if college.fee_structure %}
+                <p>{{ college.fee_structure }}</p>
+            {% elif college.fees %}
+                <p>{{ college.fees }}</p>
+            {% else %}
+                <p class="muted">
+                    Verified fee details have not been added yet.
+                    Please contact the college admissions office.
+                </p>
+            {% endif %}
+
+            {% if college.fee_structure_url %}
+            <a class="small-link"
+               href="{{ college.fee_structure_url|safe_url }}"
+               target="_blank" rel="noopener noreferrer">
+                View Official Fee Structure ↗
+            </a>
+            {% endif %}
+        </section>
+
+        <!-- SCHOLARSHIPS -->
+        <section class="panel">
+            <h3>Scholarships</h3>
+
+            {% if college.scholarships %}
+                <p>{{ college.scholarships }}</p>
+            {% elif college.scholarship_info %}
+                <p>{{ college.scholarship_info }}</p>
+            {% elif college.financial_aid %}
+                <p>{{ college.financial_aid }}</p>
+            {% else %}
+                <p class="muted">
+                    College-specific scholarship details are not available.
+                    Check the official scholarship portals.
+                </p>
+            {% endif %}
+
+            <a class="small-link" href="{{ url_for('scholarships') }}">
+                Open Scholarship Finder →
+            </a>
+        </section>
+
+        <!-- PLACEMENTS -->
+        <section class="panel">
+            <h3>Placements</h3>
+
+            {% if college.placement_info %}
+                <p>{{ college.placement_info }}</p>
+            {% elif college.placement_details %}
+                <p>{{ college.placement_details }}</p>
+            {% elif college.placements %}
+                <p>{{ college.placements }}</p>
+            {% else %}
+                <p class="muted">
+                    Verified placement information is not available.
+                    Please check the latest placement report.
+                </p>
+            {% endif %}
+
+            {% if college.placement_url %}
+            <a class="small-link"
+               href="{{ college.placement_url|safe_url }}"
+               target="_blank" rel="noopener noreferrer">
+                View Placement Report ↗
+            </a>
+            {% elif college.website|safe_url %}
+            <a class="small-link"
+               href="{{ college.website|safe_url }}"
+               target="_blank" rel="noopener noreferrer">
+                Visit Official Website ↗
+            </a>
+            {% endif %}
+        </section>
+
+        <!-- FACILITIES -->
+        <section class="panel">
+            <h3>Facilities & Hostel</h3>
+
+            {% if college.facilities %}
+                {% if college.facilities is string %}
+                    <p>{{ college.facilities }}</p>
+                {% else %}
+                    <ul>
+                        {% for facility in college.facilities %}
+                        <li>{{ facility }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% else %}
+                <p class="muted">
+                    Facilities information is not available.
+                </p>
+            {% endif %}
+
+            {% if college.hostel_info %}
+            <p>{{ college.hostel_info }}</p>
+            {% endif %}
+        </section>
+
+        <!-- CONTACT -->
+        <section class="panel">
+            <h3>Contact Details</h3>
+
+            <p>
+                <strong>Phone:</strong>
+                {{ college.contact_phone or college.contact_number or college.phone or "Not available" }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ college.contact_email or college.email or "Not available" }}
+            </p>
+
+            <p>
+                <strong>Address:</strong>
+                {{ college.address or college.location or "Not available" }}
+            </p>
+        </section>
+
+    </div>
+
+    <p class="notice">
+        CampusAI displays information available in its college directory.
+        Please confirm current fees, eligibility and placement details
+        through official college notifications.
+    </p>
+
+</main>
+
+{% endblock %}

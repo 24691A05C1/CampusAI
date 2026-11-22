@@ -1,0 +1,253 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Colleges | CampusAI{% endblock %}
+
+{% block content %}
+
+<section class="page-top">
+    <div class="container">
+        <h1>Explore Colleges</h1>
+        <p>Search the directory by college name, location or course.</p>
+    </div>
+</section>
+
+<main class="container section">
+
+    <form class="panel search-form" method="GET" id="collegeForm">
+
+        <!-- Search box with dropdown arrow -->
+        <div style="position:relative; flex:1; min-width:220px;">
+
+            <input
+                class="input"
+                name="q"
+                id="collegeSearch"
+                value="{{ query }}"
+                placeholder="Search or select a college..."
+                autocomplete="off"
+                style="width:100%; padding-right:50px; box-sizing:border-box;"
+            >
+
+            <button
+                type="button"
+                id="collegeDropdownBtn"
+                aria-label="Show all colleges"
+                style="position:absolute; right:8px; top:50%;
+                       transform:translateY(-50%);
+                       border:none; background:transparent;
+                       cursor:pointer; padding:8px;"
+            >▼</button>
+
+            <!-- College dropdown list -->
+            <div id="collegeDropdown">
+
+                {% for college in all_colleges %}
+
+                    <div class="college-option">
+                        {{ college.college_name }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+            Search Colleges
+        </button>
+
+        {% if query %}
+
+            <a class="btn btn-outline"
+               href="{{ url_for('explore_colleges') }}">
+                Clear
+            </a>
+
+        {% endif %}
+
+    </form>
+
+    <!-- Search results -->
+    {% if query %}
+
+        <div class="section-head">
+            <div>
+                <h2>{{ colleges|length }} results found</h2>
+                <p>Open a college profile for information currently saved in CampusAI.</p>
+            </div>
+        </div>
+
+        {% if colleges %}
+
+            <div class="college-grid">
+
+                {% for college in colleges %}
+
+                    <article class="college-card">
+
+                        <h3>{{ college.college_name }}</h3>
+
+                        <p>
+                            {{ college.location or "Location not added yet." }}
+                        </p>
+
+                        <div class="college-actions">
+
+                            <a class="small-link"
+                               href="{{ url_for('college_details', college_id=college._id|string) }}">
+                                View College Details →
+                            </a>
+
+                            {% if college.website|safe_url %}
+
+                                <a class="small-link resource"
+                                   href="{{ college.website|safe_url }}"
+                                   target="_blank"
+                                   rel="noopener noreferrer">
+                                    Official Website ↗
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty">
+                <h3>No colleges found</h3>
+                <p>Try another college name, location or course keyword.</p>
+            </div>
+
+        {% endif %}
+
+    {% else %}
+
+        <div class="empty">
+            <h3>Start exploring</h3>
+            <p>Enter a college name, location or course above to see matching colleges.</p>
+        </div>
+
+    {% endif %}
+
+</main>
+
+<!-- Dropdown styling and functionality -->
+<style>
+
+#collegeDropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 9999;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.10);
+}
+
+.college-option {
+    padding: 11px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 14px;
+}
+
+.college-option:hover {
+    background: #f1f5f2;
+}
+
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const input = document.getElementById("collegeSearch");
+    const button = document.getElementById("collegeDropdownBtn");
+    const dropdown = document.getElementById("collegeDropdown");
+    const options = document.querySelectorAll(".college-option");
+    const form = document.getElementById("collegeForm");
+
+    // Open or close dropdown using arrow
+    button.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen = dropdown.style.display === "block";
+
+        if (isOpen) {
+            dropdown.style.display = "none";
+        } else {
+
+            dropdown.style.display = "block";
+
+            options.forEach(function (option) {
+                option.style.display = "block";
+            });
+
+        }
+
+    });
+
+    // Filter colleges when typing, only if dropdown is open
+    input.addEventListener("input", function () {
+
+        if (dropdown.style.display === "block") {
+
+            const value = input.value.toLowerCase();
+
+            options.forEach(function (option) {
+
+                const collegeName = option.textContent.trim().toLowerCase();
+
+                option.style.display =
+                    collegeName.includes(value) ? "block" : "none";
+
+            });
+
+        }
+
+    });
+
+    // Select college and search
+    options.forEach(function (option) {
+
+        option.addEventListener("click", function () {
+
+            input.value = option.textContent.trim();
+
+            dropdown.style.display = "none";
+
+            form.submit();
+
+        });
+
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", function (event) {
+
+        if (!event.target.closest("#collegeForm")) {
+            dropdown.style.display = "none";
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

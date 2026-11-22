@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Admissions Guide | CampusAI{% endblock %}
+
+{% block content %}
+
+<section class="page-top">
+    <div class="container">
+        <h1>Admissions Guide</h1>
+        <p>A simple checklist to help you understand the college admission process.</p>
+    </div>
+</section>
+
+<main class="container section">
+
+    <div class="admission-intro">
+        <div>
+            <span class="welcome-tag">STUDENT CHECKLIST</span>
+            <h2>Plan your next step with confidence.</h2>
+            <p>
+                Admission rules, dates, fees and required documents vary by college,
+                course and admission category. Always confirm the latest details
+                in the official notification.
+            </p>
+        </div>
+        <div class="admission-art">🎓</div>
+    </div>
+
+    <div class="admission-steps">
+
+        <a href="{{ url_for('explore_colleges') }}"
+           class="step-card"
+           style="display:flex; color:inherit; text-decoration:none; cursor:pointer;">
+            <span>01</span>
+            <div>
+                <h3>Choose your course and college →</h3>
+                <p>Compare available branches, location, facilities, fees and placement information.</p>
+                <small>Click to explore colleges</small>
+            </div>
+        </a>
+
+        <a href="{{ url_for('explore_colleges') }}"
+           class="step-card"
+           style="display:flex; color:inherit; text-decoration:none; cursor:pointer;">
+            <span>02</span>
+            <div>
+                <h3>Check eligibility →</h3>
+                <p>Explore colleges and check their available courses and admission requirements.</p>
+                <small>Click to find colleges</small>
+            </div>
+        </a>
+
+        <a href="{{ url_for('explore_colleges') }}"
+           class="step-card"
+           style="display:flex; color:inherit; text-decoration:none; cursor:pointer;">
+            <span>03</span>
+            <div>
+                <h3>Track application dates →</h3>
+                <p>Find your college and visit its official website to check admission announcements and deadlines.</p>
+                <small>Click to explore college websites</small>
+            </div>
+        </a>
+
+        <a href="#document-checklist"
+           class="step-card"
+           style="display:flex; color:inherit; text-decoration:none; cursor:pointer;">
+            <span>04</span>
+            <div>
+                <h3>Prepare your documents →</h3>
+                <p>View the common documents you may need during admission.</p>
+                <small>Click to view document checklist</small>
+            </div>
+        </a>
+
+        <a href="#complete-admission"
+           class="step-card"
+           style="display:flex; color:inherit; text-decoration:none; cursor:pointer;">
+            <span>05</span>
+            <div>
+                <h3>Complete admission and reporting →</h3>
+                <p>Understand the final steps after receiving an admission offer.</p>
+                <small>Click to view final admission steps</small>
+            </div>
+        </a>
+
+    </div>
+
+    <section class="panel" id="document-checklist" style="margin-top:35px;">
+        <h2>📁 Document Preparation Checklist</h2>
+        <p class="muted">Keep these commonly requested documents ready. Requirements may differ by college and admission category.</p>
+
+        <ul style="line-height:2;">
+            <li>10th class marksheet</li>
+            <li>Intermediate / 12th class marksheets</li>
+            <li>Transfer Certificate (TC)</li>
+            <li>Study certificates</li>
+            <li>Identity proof</li>
+            <li>Recent passport-size photographs</li>
+            <li>Entrance examination rank card and hall ticket, if applicable</li>
+            <li>Caste certificate, if applicable</li>
+            <li>Income certificate, if applicable</li>
+            <li>Other documents mentioned in the official notification</li>
+        </ul>
+
+        <a href="{{ url_for('explore_colleges') }}" class="btn btn-primary">
+            Explore Colleges →
+        </a>
+    </section>
+
+    <section class="panel" id="complete-admission" style="margin-top:25px;">
+        <h2>🎓 Final Admission Steps</h2>
+        <ol style="line-height:2;">
+            <li>Check your seat allotment or admission offer.</li>
+            <li>Read the official admission instructions carefully.</li>
+            <li>Verify the fee amount and payment procedure.</li>
+            <li>Submit the required documents for verification.</li>
+            <li>Complete payment only through officially approved channels.</li>
+            <li>Report to the college on the date mentioned in the admission instructions.</li>
+        </ol>
+
+        <a href="{{ url_for('explore_colleges') }}" class="btn btn-primary">
+            Find Your College →
+        </a>
+    </section>
+
+    <section class="panel" style="margin-top:25px;">
+        <h2>Ready to explore colleges?</h2>
+        <p class="muted">
+            Find a college and check its official website for current admission notices.
+        </p>
+        <a class="btn btn-primary" href="{{ url_for('explore_colleges') }}">
+            Explore Colleges →
+        </a>
+    </section>
+
+    <p class="notice">
+        This is a general preparation guide, not an official admission notification.
+        CampusAI does not process applications or collect admission payments.
+    </p>
+
+</main>
+
+{% endblock %}

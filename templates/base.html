@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>{% block title %}CampusAI{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',filename='css/style.css') }}">
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="container nav-inner">
+
+        <a class="brand" href="{{ url_for('index') }}">
+            <span class="brand-mark">✦</span>Campus
+            <span style="color:#6544e9">AI</span>
+        </a>
+
+        <nav class="navlinks">
+
+            <a href="{{ url_for('dashboard') if session.get('user_id') else url_for('index') }}">
+                Home
+            </a>
+
+            {% if session.get('user_id') %}
+
+                <a href="{{ url_for('explore_colleges') }}">Explore Colleges</a>
+                <a href="{{ url_for('admissions') }}">Admissions</a>
+                <a href="{{ url_for('assistant') }}">AI Assistant</a>
+                <a href="{{ url_for('question_papers') }}">Question Papers</a>
+                <a href="{{ url_for('compare_colleges') }}">Compare</a>
+                <a href="{{ url_for('scholarships') }}">Scholarships</a>
+                <a href="{{ url_for('placement_insights') }}">Placements</a>
+                <a href="{{ url_for('chat_history') }}">Chat History</a>
+
+            {% endif %}
+
+        </nav>
+
+        <div class="nav-actions">
+
+            {% if session.get('user_id') %}
+
+                <a class="btn btn-outline"
+                   href="{{ url_for('logout') }}">
+                    Logout
+                </a>
+
+            {% elif request.endpoint != 'index' %}
+
+                <a class="btn btn-outline"
+                   href="{{ url_for('login') }}">
+                    Login
+                </a>
+
+                <a class="btn btn-primary"
+                   href="{{ url_for('register') }}">
+                    Register
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</header>
+
+{% with messages=get_flashed_messages(with_categories=true) %}
+
+    {% if messages %}
+
+        <div class="container">
+
+            {% for category,message in messages %}
+
+                <div class="flash {{ category }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+{% endwith %}
+
+{% block content %}{% endblock %}
+
+<footer class="footer">
+
+    <div class="container footer-inner">
+
+        <div>
+            <div class="brand" style="color:white">
+                ✦ CampusAI
+            </div>
+
+            <small>Learn • Explore • Achieve</small>
+        </div>
+
+        <div class="footer-links">
+
+            <a href="{{ url_for('index') }}">Home</a>
+
+            {% if session.get('user_id') %}
+
+                <a href="{{ url_for('explore_colleges') }}">Colleges</a>
+                <a href="{{ url_for('admissions') }}">Admissions</a>
+                <a href="{{ url_for('assistant') }}">Assistant</a>
+                <a href="{{ url_for('question_papers') }}">Question Papers</a>
+                <a href="{{ url_for('compare_colleges') }}">Compare Colleges</a>
+                <a href="{{ url_for('scholarships') }}">Scholarships</a>
+                <a href="{{ url_for('placement_insights') }}">Placements</a>
+
+            {% endif %}
+
+        </div>
+
+        <small>
+            © {{ current_year }} CampusAI. All rights reserved.
+        </small>
+
+    </div>
+
+</footer>
+
+</body>
+</html>

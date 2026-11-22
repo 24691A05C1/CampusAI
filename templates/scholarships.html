@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Scholarship Finder | CampusAI{% endblock %}
+{% block content %}
+<section class="page-top"><div class="container"><h1>Scholarship Finder</h1><p>Find official scholarship portals and any scholarship information saved in the college directory.</p></div></section>
+<main class="container section">
+  <div class="section-head"><div><h2>Official scholarship portals</h2><p>Use government portals to check current schemes, eligibility, notices and applications.</p></div></div>
+  <div class="college-grid">
+    {% for scheme in official_schemes %}
+    <article class="college-card"><span class="detail-kicker">OFFICIAL GOVERNMENT RESOURCE</span><h3>{{ scheme.name }}</h3><p>{{ scheme.description }}</p><div class="college-actions"><a class="btn btn-primary" href="{{ scheme.url }}" target="_blank" rel="noopener noreferrer">Open Official Portal ↗</a></div></article>
+    {% endfor %}
+  </div>
+  <div class="section-head" style="margin-top:36px"><div><h2>College-specific scholarship information</h2><p>Only scholarship fields saved in your CampusAI college records are shown here.</p></div></div>
+  <div class="college-grid">
+    {% for entry in entries %}
+    <article class="college-card"><h3>{{ entry.college.college_name }}</h3>
+      {% if entry.details %}<p>{{ entry.details if entry.details is string else entry.details|join(', ') if entry.details is iterable else entry.details }}</p>
+      {% else %}<p>College-specific scholarship details are not currently available in the directory. Check the official government portals above or contact the college.</p>{% endif %}
+      <div class="college-actions">{% if entry.college.website|safe_url %}<a class="small-link" href="{{ entry.college.website|safe_url }}" target="_blank" rel="noopener noreferrer">Official Website ↗</a>{% endif %}<a class="small-link resource" href="{{ url_for('college_details', college_id=entry.college._id|string) }}">College Details →</a></div>
+    </article>
+    {% else %}<div class="empty"><p>No college records are currently available.</p></div>{% endfor %}
+  </div>
+  <p class="notice">Scholarship eligibility, amounts and deadlines change. CampusAI does not guarantee eligibility or submit applications. Always read the latest official notification.</p>
+</main>{% endblock %}

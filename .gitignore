@@ -1,0 +1,35 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Private environment variables
+.env
+.env.*
+!.env.example
+
+# Database backups
+*backup*.json
+
+# Logs
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+# Exclude CampusAI database backup snapshots
+campus_ai_colleges_before*.json
+
+# Exclude CampusAI reports
+campus_ai_*report*.txt
+
+# Database backup snapshots
+campus_ai_colleges_before*.json
+
+# Audit reports
+campus_ai_*report*.txt
